@@ -1,7 +1,6 @@
 package maluevArtem;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,31 +12,24 @@ public class Main {
     public static void main(String[] args) {
 
         logger.log("Запуск программы");
-        int sizeList;
-        int valueBoundary;
-
         start();
-        try {
-            logger.log("Ввод размера списка");
-            System.out.print("Размер списка: ");
-            sizeList = scanner.nextInt();
 
-            logger.log("Ввод границы значений");
-            System.out.print("Верхняя граница значений: ");
-            valueBoundary = scanner.nextInt();
+        logger.log("Ввод размера списка");
+        System.out.print("Размер списка: ");
+        int sizeList = inputValue("Размер списка: ");
 
-        } catch (InputMismatchException ex) {
-            logger.log("Ошибка ввода");
-            System.out.println("Введено не верное значение");
-            return;
-        }
+        logger.log("Ввод границы значений");
+        System.out.print("Верхняя граница значений: ");
+        int valueBoundary = inputValue("Верхняя граница значений: ");
 
         List<Integer> list = createList(sizeList, valueBoundary);
         System.out.print("Список: ");
         list.forEach(x -> System.out.print(x + " "));
         System.out.println();
 
-        int valueFilter = inputValueFilter();
+        logger.log("Ввод значения для фильтрации");
+        System.out.print("Введите значение для фильтрации: ");
+        int valueFilter = inputValue("Введите значение для фильтрации: ");
 
         Filter filter = new Filter(valueFilter);
         List<Integer> filterList = filter.filterOut(list);
@@ -66,15 +58,15 @@ public class Main {
         return list;
     }
 
-    public static int inputValueFilter() {
-        logger.log("Ввод значения для фильтрации");
-        System.out.print("Введите значение для фильтрации: ");
-        try {
-            return scanner.nextInt();
-        } catch (InputMismatchException ex) {
-            logger.log("Ошибка ввода");
-            System.out.println("Введено не верное значение");
-            return 0;
+    public static int inputValue(String msg) {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException ex) {
+                logger.log("Ошибка ввода");
+                System.out.println("Введено не верное значение");
+                System.out.print(msg);
+            }
         }
     }
 }
